@@ -38,6 +38,15 @@ public:
 		bulletSpeed = 400;
 	}
 
+	inline void reset()
+	{
+		died = false;
+		currentSpawn = 0;
+		bulletStatus = false;
+		spaceSpeed = (rand() % 50 + 50) / 100.f;
+		spaceRatio = rand();
+	}
+
 	inline void update(float deltaTime, CircleShape playerBullet, bool *playerBulletStatus)
 	{
 		if (died)

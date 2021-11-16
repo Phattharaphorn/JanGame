@@ -32,6 +32,12 @@ public:
         currentInvincible = 0;
 	}
 
+    inline void reset()
+    {
+        shape.setPosition(Vector2f(300, 400));
+        bulletStatus = false;
+    }
+
 	inline void update(float deltaTime)
 	{
         direction = Vector2f(0, 0);
@@ -106,6 +112,8 @@ public:
                 heart--;
         }
     }
+
+    inline FloatRect getGlobalBounds() { return shape.getGlobalBounds(); }
 
     inline void render(RenderWindow *window)
     {

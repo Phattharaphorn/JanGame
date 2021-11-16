@@ -32,6 +32,11 @@ Game::Game(RenderWindow* window) :
 	backgrounds.push_back(Background(&backgroundTexture[0], -60.f));
 	backgrounds.push_back(Background(&backgroundTexture[1], -80.f));
 	backgrounds.push_back(Background(&backgroundTexture[2], -60.f));
+
+	itemTexture.loadFromFile("item.png");
+	isItemSpawning = false;
+	itemSpawnRate = 5;
+	currentItemSpawn = 0;
 }
 
 void Game::update(float deltaTime)
@@ -54,11 +59,30 @@ void Game::update(float deltaTime)
 
 	if (heart == 0)
 	{
-		window->close(); 
+		state = OverState;
+		reset();
 	}
 
 	for (Background& background : backgrounds)
 		background.Update(deltaTime);
+
+	spawnItem(deltaTime);
+
+	for (int i = 0; i < items.size(); i++)
+	{
+		items[i].update(deltaTime);
+		if (player.getGlobalBounds().intersects(items[i].getGlobalBounds()))
+		{
+			heart++;
+			items.erase(items.begin() + i);
+			continue;
+		}
+		if (items[i].lifeTime < 0)
+		{
+			items.erase(items.begin() + i);
+			continue;
+		}
+	}
 }
 
 void Game::render()
@@ -70,8 +94,49 @@ void Game::render()
 	space3.render(window);
 	player.render(window);
 	window->draw(scoreText);
+	for (int i = 0; i < items.size(); i++)
+	{
+		items[i].draw(*window);
+	}
 	for (int i = 0; i < heart; i++)
 	{
 		window->draw(hearts[i]);
+	}
+}
+
+void Game::reset()
+{
+	isItemSpawning = false;
+	itemSpawnRate = 5;
+	currentItemSpawn = 0;
+	heart = maxHeart;
+	player.reset();
+	space.reset();
+	space2.reset();
+	space3.reset();
+	items.clear();
+}
+
+void Game::spawnItem(float deltaTime)
+{
+	if (heart <= 5)
+	{
+		isItemSpawning = true;
+	}
+	else if (heart == maxHeart)
+	{
+		isItemSpawning = false;
+	}
+
+	if (isItemSpawning)
+	{
+		currentItemSpawn += deltaTime;
+		if (currentItemSpawn >= itemSpawnRate)
+		{
+			currentItemSpawn = 0;
+			int randomX = randint(0, 799 - 50);
+			int randomY = randint(200, 500);
+			items.push_back(Item(&itemTexture, Vector2f(randomX, randomY), Vector2f(50, 50), 5));
+		}
 	}
 }

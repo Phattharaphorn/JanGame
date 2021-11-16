@@ -1,7 +1,10 @@
 ﻿#include "Game.h"
 #include "Menu.h"
+#include "Gameover.h"
+#include "Score.h"
 
 int state = MenuState;
+ScoreData scoredata[6]; 
 
 int main()
 {
@@ -13,7 +16,9 @@ int main()
     float deltaTime = 0;
 
     Game game(&window);
-    Menu menu(&window);
+    Score scoreScene(800, 600);
+    Menu menu(&window, &scoreScene);
+    Gameover over(800, 600);
    
     while (window.isOpen())
     {
@@ -26,6 +31,14 @@ int main()
         {
             game.update(deltaTime);
         }
+        else if (state == OverState)
+        {
+            over.update(window);
+        }
+        else if (state == ScoreState)
+        {
+            scoreScene.update(window);
+        }
         window.clear();
         if (state == MenuState)
         {
@@ -34,6 +47,14 @@ int main()
         else if (state == GameState)
         {
             game.render();
+        }
+        else if (state == OverState)
+        {
+            over.draw(window);
+        }
+        else if (state == ScoreState)
+        {
+            scoreScene.draw(window);
         }
         window.display();
     }

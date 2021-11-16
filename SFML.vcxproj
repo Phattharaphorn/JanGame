@@ -148,15 +148,21 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Gameover.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllHeader.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Gameover.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Space.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

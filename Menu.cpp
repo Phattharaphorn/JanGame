@@ -1,8 +1,9 @@
 #include "Menu.h"
 
-Menu::Menu(RenderWindow* window)
+Menu::Menu(RenderWindow* window, Score* ss)
 {
 	this->window = window;
+	scoreScene = ss;
 	float width = window->getSize().x;
 	float height = window->getSize().y;
 	this->size = sf::Vector2f(800.0f, 600.0f);
@@ -61,7 +62,8 @@ void Menu::update()
 		switch (event.type)
 		{
 		case sf::Event::KeyReleased:
-			switch (event.key.code) {
+			switch (event.key.code)
+			{
 			case sf::Keyboard::Left:
 				MoveLeft();
 				break;
@@ -74,26 +76,18 @@ void Menu::update()
 				switch (GetPressedItem())
 				{
 				case 0:
-					std::cout << "Play has been pressed" << std::endl;
 					state = GameState;
-					//go to state
 					break;
 
 				case 1:
-					std::cout << "Leaderboard has been pressed" << std::endl;
-					//go to state
+					state = ScoreState;
+					scoreScene->loadScore();
 					break;
 
 				case 2:
 					window->close();
 					break;
 
-				case Event::KeyPressed:
-					if (Keyboard::isKeyPressed(Keyboard::Key::Escape))
-						window->close();
-					break;
-					cout << char(event.text.unicode) << endl;
-					break;
 				default:
 					break;
 				}
